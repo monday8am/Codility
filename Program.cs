@@ -22,31 +22,24 @@ namespace ConsoleApplication
             Console.WriteLine (StoneWall (arr));
         }
 
-        // (Review again!)
         // Solution at: http://blog.codility.com/2012/06/sigma-2012-codility-programming.html
         static int StoneWall (int[] H)
         {
             int result = 0;
             Stack<int> stack = new Stack<int> ();
 
-            for (int i = 0; i < H.Length; i++)
+            foreach (var item in H)
             {
-                if (stack.Count > 0 && stack.Peek () > H[i])
-                {
-                    stack.Pop ();
-                }
+                while (stack.Count > 0 && item < stack.Peek()) 
+                    stack.Pop();
 
-                if (stack.Count > 0 && stack.Peek() == H[i])
-                {               
-                    continue;
-                }    
-                else
+                if(stack.Count == 0 || item > stack.Peek()) 
                 {
+                    stack.Push(item);
                     result++;
-                    stack.Push (H[i]);                                      
-                }        
+                }                 
             }
-
+            
             return result;
         }
 
