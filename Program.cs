@@ -18,8 +18,68 @@ namespace ConsoleApplication
                 Console.WriteLine (arr[i]);
             }
             */
-            var arr = new int[] {8, 8, 5, 7, 9, 8, 7, 4, 8};
-            Console.WriteLine (StoneWall (arr));
+            var arr = new int[] {4, 3, 4, 4, 4, 2};
+            Console.WriteLine (EquiLeader (arr));
+        }
+
+        static int EquiLeader (int[] A)
+        {
+            int result = 0;
+            int candidate = -1;
+            int total = 0;
+            int len = A.Length;
+            Stack<int> stack = new Stack<int> ();
+
+            // get leader
+            foreach (var item in A)
+            {
+                if (stack.Count == 0)
+                {
+                    stack.Push (item);
+                }
+                else 
+                {
+                    if (stack.Peek () != item)
+                        stack.Pop ();
+                    else
+                        stack.Push (item);    
+                }                      
+            }
+
+            // if no leader exist, no posibilities
+            if (stack.Count == 0)
+                return 0;
+            else
+                candidate = stack.Pop ();
+
+            for (var i = 0; i < len; i++)
+            {
+                if (A[i] == candidate)
+                    total++;
+            }  
+
+            if (total > len/2)
+            {
+                // leader exists!
+                int count = 0;
+                for (var i = 0; i < len; i++)
+                {
+                    if (A[i] == candidate)
+                        count++;
+
+                    if (count > (i + 1) / 2 && 
+                       (total - count) > (len - (i + 1))/2)
+                    {
+                        result++;   
+                    }    
+                }     
+            }
+            else 
+            {
+                return 0;
+            }
+
+            return result;
         }
 
         // Solution at: http://blog.codility.com/2012/06/sigma-2012-codility-programming.html
@@ -39,7 +99,7 @@ namespace ConsoleApplication
                     result++;
                 }                 
             }
-            
+
             return result;
         }
 
