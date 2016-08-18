@@ -18,9 +18,59 @@ namespace ConsoleApplication
                 Console.WriteLine (arr[i]);
             }
             */
-            var arr = new int[] {4, 3, 4, 4, 4, 2};
-            Console.WriteLine (EquiLeader (arr));
+            var arr = new int[] {3, 4, 3, 2, 3, -1, 3, 2};
+            Console.WriteLine (Dominator (arr));
         }
+
+        static int Dominator (int[] A)
+        {
+            int candidate = -1;
+            Stack<int> stack = new Stack<int> ();
+
+            // get leader or dominator
+            foreach (var item in A)
+            {
+                if (stack.Count == 0)
+                {
+                    stack.Push (item);
+                }
+                else 
+                {
+                    if (stack.Peek () != item)
+                        stack.Pop ();
+                    else
+                        stack.Push (item);    
+                }                      
+            }
+
+            // if no leader exist, return -1
+            if (stack.Count == 0)
+                return -1;
+            else
+                candidate = stack.Pop ();
+
+
+            int firstIndex = -1;
+            int count = 0;
+
+            // check candidate correctness and grab
+            // first index.
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (A[i] == candidate)
+                {
+                    count++;
+                    if (firstIndex == -1)
+                        firstIndex = i;
+                }
+            }
+
+            if (count > A.Length / 2)
+                return firstIndex;
+
+            return -1;
+        }
+
 
         static int EquiLeader (int[] A)
         {
