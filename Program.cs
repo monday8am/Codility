@@ -17,11 +17,41 @@ namespace ConsoleApplication
             {
                 Console.WriteLine (arr[i]);
             }
-            */
-            var arr = new int[] {3, 4, 3, 2, 3, -1, 3, 2};
-            Console.WriteLine (Dominator (arr));
+            */                  
+            //var arr = new int[] {5, -7, 3, 5, -2, 4, -1};
+            var arr = new int[] {-10, -7, -1, -1, -2, -1, -1};
+            Console.WriteLine (MaxSliceSum (arr));
         }
 
+        #region Lesson 9 Maximum slice problem
+
+        static int MaxSliceSum (int[] A)
+        {
+            int maxSlice = 0;
+            int maxEnding = 0;
+            int max = A[0];
+
+            // get max int.
+            for (int i = 1; i < A.Length; i++)
+            {
+                max = A[i] > max ? A[i] : max;
+            }
+
+            if (max < 0)
+                return max;
+
+            foreach (var item in A)
+            {
+                maxEnding = Math.Max (0, maxEnding + item);
+                maxSlice = Math.Max (maxEnding, maxSlice);
+            }
+
+            return maxSlice;
+        }
+
+        #endregion
+
+        #region Lesson 8 Leader 
         static int Dominator (int[] A)
         {
             int candidate = -1;
@@ -70,7 +100,6 @@ namespace ConsoleApplication
 
             return -1;
         }
-
 
         static int EquiLeader (int[] A)
         {
@@ -131,7 +160,9 @@ namespace ConsoleApplication
 
             return result;
         }
+        #endregion
 
+        #region Lesson 7 Stacks and Queues
         // Solution at: http://blog.codility.com/2012/06/sigma-2012-codility-programming.html
         static int StoneWall (int[] H)
         {
@@ -179,7 +210,6 @@ namespace ConsoleApplication
 
             return stack.Count == 0 ? 1 : 0;
         }
-
 
         static int Brackets (string S)
         {
@@ -242,12 +272,11 @@ namespace ConsoleApplication
                         }        
                     }   
                 }
-
-
             }
 
             return result;
         }
+        #endregion
 
         static int Triangle (int[] A)
         {
