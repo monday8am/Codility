@@ -19,11 +19,58 @@ namespace ConsoleApplication
             }
             */                  
             //var arr = new int[] {5, -7, 3, 5, -2, 4, -1};
-            var arr = new int[] {-10, -7, -1, -1, -2, -1, -1};
-            Console.WriteLine (MaxSliceSum (arr));
+            var arr = new int[] {23171, 21011, 21123, 21366, 21013, 21367 };
+            //365
+            Console.WriteLine (MaxProfit (arr));
         }
 
         #region Lesson 9 Maximum slice problem
+
+        static int MaxProfit (int[] A)
+        {
+            int maxEnding = 0;
+            int maxSlice = 0;            
+            int len = A.Length;
+            int[] delta = new int[len];
+
+            for (int i = 1; i < len; i++)
+            {
+                delta[i] = A[i] - A[i -1]; 
+            }
+
+            foreach (var item in delta)
+            {
+                maxEnding = Math.Max (0, maxEnding + item);
+                maxSlice = Math.Max (maxEnding, maxSlice);
+            }
+
+            return maxSlice;
+        }
+
+        static int MaxDoubleSliceSum (int[] A)
+        {
+            int len = A.Length;
+            int maxSlice = 0;
+            int[] leftMaxSum = new int[len];
+            int[] rightMaxSum = new int[len];
+
+            for (int i = 1; i < len - 1; i++)
+            {
+                leftMaxSum[i] = Math.Max (0, leftMaxSum[i-1] + A[i]);     
+            }
+
+            for (int i = len - 2; i > 0; i--)
+            {
+                rightMaxSum[i] = Math.Max (0 , rightMaxSum[i+1] + A[i]); 
+            }   
+
+            for (int i = 1; i < len - 1; i++)
+            {
+                maxSlice = Math.Max (maxSlice, leftMaxSum [i - 1] + rightMaxSum[i + 1]);
+            }
+
+            return maxSlice;
+        }        
 
         static int MaxSliceSum (int[] A)
         {
