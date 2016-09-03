@@ -21,8 +21,38 @@ namespace ConsoleApplication
             //var arr = new int[] {5, -7, 3, 5, -2, 4, -1};
             var arr = new int[] {23171, 21011, 21123, 21366, 21013, 21367 };
             //365
-            Console.WriteLine (MaxProfit (arr));
+            //Console.WriteLine (MaxProfit (arr));
+            Console.WriteLine (MinPerimeterRectangle (2));
+            
         }
+
+        #region Lesson 10 Prime and composite numbers
+
+        static int MinPerimeterRectangle (int N)
+        {
+            if (N == 1)
+            {
+                return 2 * (1 + N/1);
+            }
+
+            int result = Int32.MaxValue;
+            int i = 1;
+
+            while (i * i < N)
+            {
+                if (N % i == 0)
+                    result = Math.Min (result, 2 * (i + N/i));
+
+                i++;
+
+                if (i * i == N)
+                    result = Math.Min (result, 4*i); // box case!
+            }
+
+            return result;
+        }
+
+        #endregion
 
         #region Lesson 9 Maximum slice problem
 
