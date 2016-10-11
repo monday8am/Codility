@@ -22,11 +22,102 @@ namespace ConsoleApplication
             var arr = new int[] {23171, 21011, 21123, 21366, 21013, 21367 };
             //365
             //Console.WriteLine (MaxProfit (arr));
-            Console.WriteLine (MinPerimeterRectangle (2));
+            Console.WriteLine (CountFactors (38));
             
         }
 
+        #region Lesson 16 Greedy algorithms
+
+        static int MaxNonoverlappingSegments (int[] A, int[] B)
+        {
+            if (A.Length == 0)
+                return 0;
+                
+            int res = 1;
+            int lastEnd = B[0];
+
+            for (int i = 1; i < B.Length; i++)
+            {
+                if (lastEnd < A[i])
+                {
+                    res++;
+                    lastEnd = B[i];
+                }
+            }
+            
+            return res;
+        }        
+
+        static int TieRopes (int K, int[] A)
+        {
+            long sum = 0;
+            int res = 0;
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (A[i] >= K || 
+                   sum + A[i] >= K
+                   )
+                {
+                    res++;
+                    sum = 0;
+                }
+                else
+                {
+                    sum += A[i];
+                }
+            }
+
+            return res;
+        }
+
+        #endregion
+
+
         #region Lesson 10 Prime and composite numbers
+
+        static int Flags (int[] A)
+        {
+            int maxNum = Convert.ToInt32 (Math.Sqrt (A.Length - 1));
+            int lastDistance = -1;
+            int result = 0;
+
+            for (int i = 1; i < A.Length - 1; i++)
+            {
+                if (A[i] > A[i -1] && A[i] > A[i + 1])
+                {
+                    if (lastDistance == -1)
+                        lastDistance = 0;
+                    else 
+                        lastDistance = Min    
+                }
+            }
+
+
+            return 0;
+        }
+
+        static int CountFactors (int N)
+        {
+            if (N == 1)
+                return 1;
+
+            int result = 0;
+            int i = 1;
+
+            while (i * i < N)
+            {
+                if (N % i == 0)
+                    result += 2;
+
+                i++;
+
+                if (i * i == N)
+                    result += 1;
+            }
+
+            return result;            
+        }
 
         static int MinPerimeterRectangle (int N)
         {
