@@ -19,10 +19,11 @@ namespace ConsoleApplication
             }
             */                  
             //var arr = new int[] {5, -7, 3, 5, -2, 4, -1};
-            var arr = new int[] {23171, 21011, 21123, 21366, 21013, 21367 };
+            var arr = new int[] {1};
             //365
             //Console.WriteLine (MaxProfit (arr));
-            Console.WriteLine (CountFactors (38));
+
+            Console.WriteLine (MinAbsSumOfTwo (arr));
             
         }
 
@@ -73,6 +74,100 @@ namespace ConsoleApplication
 
         #endregion
 
+        #region Lesson 15 Caterpillar method
+
+        static int MinAbsSumOfTwo (int[] A)
+        {
+            if (A.Length == 1)
+                return Math.Abs (A[0] + A[0]);
+
+            int res = Int32.MaxValue;
+            Array.Sort (A);
+
+            int p1 = 0;
+            int p2 = A.Length - 1;
+
+            while (p1 < p2)
+            {
+                int current = Math.Abs(A[p1] + A[p2]);
+                int left = Math.Abs(A[p1 + 1] + A[p2]);
+                int right = Math.Abs(A[p1] + A[p2 - 1]);
+
+                if (left < current)
+                {
+                    res = Math.Min (res, Math.Min (Math.Abs (A[p1] + A[p1]), left));
+                    p1 ++;
+                }
+                else if (right < current)
+                {
+                    res = Math.Min (res, Math.Min (Math.Abs (A[p2] + A[p2]), right));                    
+                    p2 --;
+                }
+                else
+                {
+                    res = Math.Min (res, current); 
+                    p1 ++;
+                    p2 --;
+                }   
+                             
+            }
+
+            return res;
+        }
+
+        static int CountDistinctSlices (int[] A)
+        {
+            HashSet<int> hash = new HashSet<int> ();
+            long p1 = 0;
+            long p2 = 0;
+            long res = 0;
+
+            while (p1 < A.Length && p2 < A.Length)
+            {
+                if (!hash.Contains (A[p1]))
+                {
+                    hash.Add (A[p1]);
+                    res += 1 + (p1 - p2);
+                    p1 ++;
+                }
+                else
+                {
+                    hash.Remove (A[p2]);
+                    p2 ++;
+                }
+            }
+
+            return Convert.ToInt32 (res);
+        }
+
+        static int CountTriangles (int[] A)
+        {
+            Array.Sort (A);
+            int res = 0;
+
+            // Fix first element.
+            for (int i = 0; i < A.Length - 2; i++)
+            {
+                int k = i + 2;
+
+                // Fix second element.
+                for (int j = i + 1; j < A.Length; j++)
+                {
+                    while (k < A.Length && A[i] + A[j] > A[k])
+                        k++;
+                    res += k - j - 1;    
+                }                
+            }
+
+            return res;
+        }
+
+        static int AbsDistinct (int[] A)
+        {
+            return 0;        
+        }
+
+        #endregion
 
         #region Lesson 10 Prime and composite numbers
 
@@ -88,11 +183,10 @@ namespace ConsoleApplication
                 {
                     if (lastDistance == -1)
                         lastDistance = 0;
-                    else 
-                        lastDistance = Min    
+                    /// else 
+                        //lastDistance = Min;  
                 }
             }
-
 
             return 0;
         }
