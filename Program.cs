@@ -8,24 +8,14 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            /*
-            var S = "CAGCCTA";
-            var P = new int[] {2,5,0};
-            var Q = new int[] {4,5,6};            
-            var arr = GenomicRangeQuery (S, P, Q);
-            for (int i = 0; i < arr.Length; i++)
-            {
-                Console.WriteLine (arr[i]);
-            }
-            */                  
-            //var arr = new int[] {5, -7, 3, 5, -2, 4, -1};
             var arr = new int[] {4, 2, 2, 5, 1, 5, 8};
-            //365
-            //Console.WriteLine (MaxProfit (arr));
-
             Console.WriteLine (MinAvgTwoSlice (arr));
-            
         }
+
+
+
+
+        
 
         #region Lesson 16 Greedy algorithms
 
@@ -467,7 +457,7 @@ namespace ConsoleApplication
 
             return result;
         }
-        
+
         #endregion
 
         #region Lesson 7 Stacks and Queues
