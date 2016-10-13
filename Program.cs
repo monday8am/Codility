@@ -19,11 +19,11 @@ namespace ConsoleApplication
             }
             */                  
             //var arr = new int[] {5, -7, 3, 5, -2, 4, -1};
-            var arr = new int[] {1};
+            var arr = new int[] {4, 2, 2, 5, 1, 5, 8};
             //365
             //Console.WriteLine (MaxProfit (arr));
 
-            Console.WriteLine (MinAbsSumOfTwo (arr));
+            Console.WriteLine (MinAvgTwoSlice (arr));
             
         }
 
@@ -165,6 +165,51 @@ namespace ConsoleApplication
         static int AbsDistinct (int[] A)
         {
             return 0;        
+        }
+
+        #endregion
+
+        #region Lesson 14 Binary search algorithm
+
+        static int MinMaxDivision (int K, int M, int[] A)
+        {
+            int[] p = new int[A.Length];
+            int max = 0, sum = 0;
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                sum += A[i];
+                max = Math.Max (max, A[i]);
+            }
+
+            int left = max;
+            int right = sum;
+
+            while (left <= right)
+            {
+                int mid = (left + right) >> 1;
+                int intervals = CountIntervals(A, mid);
+                if (intervals > K)
+                    left = mid + 1;
+                else
+                    right = mid - 1;   
+            }
+
+            return left;
+        }
+
+        static int CountIntervals(int[] A, int target) 
+        {
+            int sum = 0, count = 0;
+            for (int i = 0; i < A.Length; i++) 
+            {
+                sum += A[i];
+                if (sum > target) {
+                    count++;
+                    sum = A[i];
+                }
+            }
+            return count + (sum > 0 ? 1 : 0);
         }
 
         #endregion
@@ -422,6 +467,7 @@ namespace ConsoleApplication
 
             return result;
         }
+        
         #endregion
 
         #region Lesson 7 Stacks and Queues
@@ -538,7 +584,13 @@ namespace ConsoleApplication
 
             return result;
         }
+
         #endregion
+
+        #region Lesson 5 Sorting
+
+        // TODO:
+        // NumberOfDiscIntersections
 
         static int Triangle (int[] A)
         {
@@ -591,8 +643,30 @@ namespace ConsoleApplication
 
             return result;
         }
+
+        #endregion
         
-        // create multidim array and try again!
+        #region Lesson 4 Prefix sums
+
+        static int MinAvgTwoSlice (int[] A)
+        {
+            int res = 0;
+            int min = Int32.MaxValue;
+
+            // Empirically, is demostrable that the best combination
+            // is the minor pair a + b / 2 . Find it and return index.
+            for (int i = 1; i < A.Length; i++)
+            {
+                if ((A[i] + A[i - 1])/2 < min)
+                {
+                    min = (A[i] + A[i - 1])/2;
+                    res = i - 1;
+                }
+            }
+
+            return res;
+        }
+
         static int[] GenomicRangeQuery (string S, int[] P, int[] Q)
         {
             int len = S.Length + 1;
@@ -703,37 +777,39 @@ namespace ConsoleApplication
             return result;
         }
 
+        #endregion
+
+        #region Lesson 4 Counting Elements
+
         // not ok. research!
         static int[] MaxCounters (int N, int[] A)
         {
-            int[] result = new int[N];                
+            int[] counters = new int[N];                
             int[] diff = new int[N];   
-            int max = 0;
+            int baseValue = 0;
+            int max = -1;
 
             for (int i = 0; i < A.Length; i++)
             {
                 if (1 <= A[i] && A[i] <= N)
-                {                        
-                    result[A[i] - 1] ++;
-
-                    if (result[A[i] - 1] > max)
-                        max = result[A[i] - 1];        
+                {                     
+                    int v = (counters[A[i] - 1] > baseValue) ? counters[A[i] - 1] : baseValue; 
+                    counters[A[i] - 1] = v + 1;      
+                    max = Math.Max (max, counters[A[i] - 1]);
                 }
                 else
                 {
-                    for (int j = 0; j < diff.Length; j++)
-                    {
-                        diff[j] = (max - result[j]);
-                    }
+                    baseValue = max;
                 }
             }
 
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < counters.Length; i++)
             {
-                result[i] += diff[i];
+                if (counters[i] < baseValue)
+                    counters[i] = baseValue;
             }
 
-            return result;
+            return counters;
         }
 
         static int FrogRiverOne (int X, int[] A)
@@ -755,7 +831,6 @@ namespace ConsoleApplication
             
             return -1;
         }
-
 
         static int MissingInteger (int[] A)
         {
@@ -790,6 +865,10 @@ namespace ConsoleApplication
             return true;
         }
 
+        #endregion
+
+        #region Lesson 3 Time complexity
+
         static int PermMissingElem(int[] A)
         {
             var pool = new int[A.Length + 1];
@@ -806,6 +885,27 @@ namespace ConsoleApplication
         {
             return (int)decimal.Ceiling ((Y - X)/(D * 1.0M));        
         }
+
+        static int TapeEquilibrium (int[] A)
+        {
+            long leftSide = A[0];
+            long rightSide = 0;
+            long result = long.MaxValue;
+
+            for (int i = 1; i < A.Length; i++)
+                rightSide += A[i]; 
+
+            for (int i = 1; i < A.Length; i++)
+            {    
+                result = Math.Min (result, Math.Abs(leftSide - rightSide));  
+                leftSide += A[i];
+                rightSide -= A[i];                    
+            }    
+            return Convert.ToInt32 (result);
+        }
+
+        #endregion
+
 
         static int OddOccurrences (int[] A)
         {
@@ -832,26 +932,7 @@ namespace ConsoleApplication
             return arr[0];
         }
 
-        static int TapeSolution (int[] A)
-        {
-            long leftSide = A[0];
-            long rightSide = 0;
-            long subValue = 0;
-            long result = long.MaxValue;
 
-            for (int i = 1; i < A.Length; i++)
-                rightSide += A[i]; 
-
-            for (int i = 1; i < A.Length; i++)
-            {    
-                subValue = Math.Abs(leftSide - rightSide);     
-                if (subValue < result)
-                    result = subValue;
-                leftSide += A[i];
-                rightSide -= A[i];                    
-            }    
-            return Convert.ToInt32 (result);
-        }
 
     }
 }
